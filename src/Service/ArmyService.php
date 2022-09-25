@@ -33,7 +33,7 @@ class ArmyService implements ArmyServiceInterface
             }
 
             $amount = $regiment->getAmount();
-            $newAmount = $amount - round($amount * $modifier);
+            $newAmount = $amount - (int) round($amount * $modifier);
 
             $regiment->setAmount($newAmount);
         }

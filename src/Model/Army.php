@@ -75,11 +75,6 @@ class Army implements ArmyInterface
         return $this->modifiers;
     }
 
-    public function clearModifiers()
-    {
-        $this->modifiers = [];
-    }
-
     /**
      * @inheritDoc
      */

@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class BattleConfigurationCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $processor = new Processor();
 

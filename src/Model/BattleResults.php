@@ -10,14 +10,17 @@ class BattleResults implements BattleResultInterface
 {
     private ?BattleInterface $battle = null;
 
-    private ?Army $winner = null;
+    private ?ArmyInterface $winner = null;
 
+    /**
+     * @var mixed[]
+     */
     private array $stats = [];
 
     /**
      * @inheritDoc
      */
-    public function setStats(array $stats): BattleResultInterface
+    public function setStats(array $stats): self
     {
         $this->stats = $stats;
         return $this;
@@ -33,9 +36,9 @@ class BattleResults implements BattleResultInterface
 
     /**
      * @param BattleInterface $battle
-     * @return BattleResultInterface
+     * @return $this
      */
-    public function setBattle(BattleInterface $battle): BattleResultInterface
+    public function setBattle(BattleInterface $battle): self
     {
         $this->battle = $battle;
         return $this;
@@ -59,22 +62,11 @@ class BattleResults implements BattleResultInterface
 
     /**
      * @param ArmyInterface $army
-     * @return BattleResultInterface
+     * @return $this
      */
-    public function setWinner(ArmyInterface $army): BattleResultInterface
+    public function setWinner(ArmyInterface $army): self
     {
         $this->winner = $army;
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function __serialize(): array
-    {
-        return [
-            'winner' => $this->getWinner(),
-            'stats' => $this->getStats(),
-        ];
     }
 }

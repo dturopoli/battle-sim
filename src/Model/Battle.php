@@ -27,7 +27,7 @@ class Battle implements BattleInterface
 
     /**
      * @param ArmyInterface $army
-     * @return BattleInterface
+     * @return $this
      */
     public function setAttacker(ArmyInterface $army): self
     {
@@ -45,7 +45,7 @@ class Battle implements BattleInterface
 
     /**
      * @param ArmyInterface $army
-     * @return BattleInterface
+     * @return $this
      */
     public function setDefender(ArmyInterface $army): self
     {
@@ -63,7 +63,7 @@ class Battle implements BattleInterface
 
     /**
      * @param TerrainInterface|null $terrain
-     * @return BattleInterface
+     * @return $this
      */
     public function setTerrain(?TerrainInterface $terrain): self
     {

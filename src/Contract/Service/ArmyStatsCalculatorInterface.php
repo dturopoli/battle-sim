@@ -30,7 +30,7 @@ interface ArmyStatsCalculatorInterface
     /**
      * Calculate army defense points with included modifiers
      * @param ArmyInterface $army
-     * @return mixed
+     * @return float
      */
     public function calculateModifiedDefense(ArmyInterface $army): float;
 }

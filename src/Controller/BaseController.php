@@ -9,7 +9,7 @@ abstract class BaseController extends AbstractController
 {
     /**
      * @param ConstraintViolationListInterface $violations
-     * @return array
+     * @return string[]
      */
     public function formatConstraintViolations(ConstraintViolationListInterface $violations): array
     {

@@ -6,5 +6,9 @@ use App\Contract\Model\BattleInterface;
 
 interface BattleSimulatorInterface
 {
-    public function simulate(BattleInterface $battle);
+    /**
+     * Simulate battle
+     * @param BattleInterface $battle
+     */
+    public function simulate(BattleInterface $battle): void;
 }

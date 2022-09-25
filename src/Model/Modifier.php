@@ -12,9 +12,9 @@ class Modifier implements ModifierInterface
 
     /**
      * @param string $name
-     * @return ModifierInterface
+     * @return $this
      */
-    public function setName(string $name): ModifierInterface
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -38,9 +38,9 @@ class Modifier implements ModifierInterface
 
     /**
      * @param float $value
-     * @return ModifierInterface
+     * @return $this
      */
-    public function setValue(float $value): ModifierInterface
+    public function setValue(float $value): self
     {
         $this->value = $value;
         return $this;

@@ -13,7 +13,7 @@ class ArmyFactory implements ArmyFactoryInterface
     /**
      * @param UnitRepository $unitRepository
      * @param RegimentFactoryInterface $regimentFactory
-     * @param array $validUnitTypes
+     * @param string[] $validUnitTypes
      */
     public function __construct(
         private UnitRepository $unitRepository,

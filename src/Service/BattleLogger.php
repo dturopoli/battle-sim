@@ -61,7 +61,7 @@ class BattleLogger implements BattleLoggerInterface
 
     /**
      * @param ArmyInterface $army
-     * @return array
+     * @return array<int,array<string,mixed>>
      */
     private function logModifiers(ArmyInterface $army): array
     {
@@ -79,7 +79,7 @@ class BattleLogger implements BattleLoggerInterface
 
     /**
      * @param ArmyInterface $army
-     * @return array
+     * @return array<int,array<string,mixed>>
      */
     private function logRegiments(ArmyInterface $army): array
     {

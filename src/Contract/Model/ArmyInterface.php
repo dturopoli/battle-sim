@@ -42,8 +42,6 @@ interface ArmyInterface
      */
     public function getModifiers(): array;
 
-    public function clearModifiers();
-
     /**
      * @return int
      */

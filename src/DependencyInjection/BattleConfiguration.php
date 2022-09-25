@@ -24,7 +24,7 @@ class BattleConfiguration implements ConfigurationInterface
      * Create battle configuration
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addBattleConfiguration(ArrayNodeDefinition $rootNode)
+    private function addBattleConfiguration(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()

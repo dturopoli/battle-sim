@@ -29,7 +29,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * @param BattleInterface $battle
      * @throws BattleTooLongException
      */
-    public function simulate(BattleInterface $battle)
+    public function simulate(BattleInterface $battle): void
     {
         $this->prepareBattle($battle);
         $this->startBattle($battle);
@@ -40,7 +40,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * Do battle preparations (start log, apply battle specific modifiers)
      * @param BattleInterface $battle
      */
-    private function prepareBattle(BattleInterface $battle)
+    private function prepareBattle(BattleInterface $battle): void
     {
         $this->battleLogger->logPhase('Start', $battle);
 
@@ -52,7 +52,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * End battle (determine winner)
      * @param BattleInterface $battle
      */
-    private function endBattle(BattleInterface $battle)
+    private function endBattle(BattleInterface $battle): void
     {
         $battleResults = $battle->getBattleResults();
 
@@ -72,7 +72,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * @param BattleInterface $battle
      * @throws BattleTooLongException
      */
-    private function startBattle(BattleInterface $battle)
+    private function startBattle(BattleInterface $battle): void
     {
         $attacker = $battle->getAttacker();
         $defender = $battle->getDefender();
@@ -100,7 +100,7 @@ class BattleSimulator implements BattleSimulatorInterface
     /**
      * @param BattleInterface $battle
      */
-    private function executePhase(BattleInterface $battle)
+    private function executePhase(BattleInterface $battle): void
     {
         $attacker = $battle->getAttacker();
         $defender = $battle->getDefender();
@@ -154,7 +154,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * Apply battle specific modifiers (at the moment only terrain modifier is applied)
      * @param BattleInterface $battle
      */
-    private function applyBattleModifiers(BattleInterface $battle)
+    private function applyBattleModifiers(BattleInterface $battle): void
     {
         $terrain = $battle->getTerrain();
 
@@ -173,7 +173,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * Applies phase modifiers to army (moral, dice roll) and additional modifiers
      * @param ArmyInterface $army
      */
-    private function applyPhaseModifiersToArmy(ArmyInterface $army)
+    private function applyPhaseModifiersToArmy(ArmyInterface $army): void
     {
         $diceRoll = $this->diceRoller->roll();
 
@@ -185,7 +185,7 @@ class BattleSimulator implements BattleSimulatorInterface
      * If two dice rolls match apply random special event modifier
      * @param BattleInterface $battle
      */
-    private function applySpecialEventModifier(BattleInterface $battle)
+    private function applySpecialEventModifier(BattleInterface $battle): void
     {
         $roll = $this->diceRoller->roll(10);
         $roll2 = $this->diceRoller->roll(10);

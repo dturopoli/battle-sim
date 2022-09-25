@@ -10,12 +10,12 @@ class BattleRequest extends AbstractRequest
     #[Assert\Type('numeric')]
     #[Assert\Positive]
     #[Assert\Range(min: 1, max: 1000000000)]
-    protected $army1;
+    protected mixed $army1;
 
     #[Assert\NotBlank]
     #[Assert\Type('numeric')]
     #[Assert\Range(min: 1, max: 1000000000)]
-    protected $army2;
+    protected mixed $army2;
 
     /**
      * @return int
@@ -36,7 +36,7 @@ class BattleRequest extends AbstractRequest
     /**
      * @param $value
      */
-    protected function setArmy1($value)
+    protected function setArmy1(mixed $value): void
     {
         $this->army1 = $value;
     }
@@ -44,7 +44,7 @@ class BattleRequest extends AbstractRequest
     /**
      * @param $value
      */
-    protected function setArmy2($value)
+    protected function setArmy2(mixed $value): void
     {
         $this->army2 = $value;
     }
