@@ -1,0 +1,6 @@
+battle_configuration:
+    enable_special_events: true
+    valid_unit_types:
+        - infantry
+        - cavalry
+        - artillery

@@ -1,0 +1,79 @@
+{% if errors is defined %}
+    <div class="error-messages">
+        {% for error in errors %}
+            <p>{{ error.propertyPath }} : {{ error.getMessage }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if battle_results is defined %}
+    <h1>Battle Winner: {{ battle_results.winner.name }}</h1>
+
+    <h2><b>BATTLE STATS:</b></h2>
+    <p><b>Attacker:</b> {{ battle_results.battle.attacker.name }}</p>
+    <p><b>Defender:</b> {{ battle_results.battle.defender.name }}</p>
+    <p><b>Terrain type:</b>: {{ battle_results.battle.terrain.name | default('No terrain') }}</p>
+
+    <div>
+        <table id="battle-results-table" class="table">
+            <thead>
+                <th>Turn</th>
+                <th class="attacker">Attacker moral</th>
+                <th class="attacker">Attacker standing regiments</th>
+                <th class="attacker">Attacker modifiers</th>
+                <th class="defender">Defender moral</th>
+                <th class="defender">Defender standing regiments</th>
+                <th class="defender">Defender modifiers</th>
+            </thead>
+            <tbody>
+                {% for turn,stat in battle_results.stats %}
+                    <tr>
+                        <td>{{ turn }}</td>
+                        <td class="attacker">{{ stat.attacker.moral }}</td>
+                        <td class="attacker">
+                            {% for regiment in stat.attacker.regiments %}
+                                <p>{{ regiment.unit }}: {{ regiment.amount }}</p>
+                            {% endfor %}
+                        </td>
+                        <td class="attacker">
+                            {% for modifier in stat.attacker.modifiers %}
+                                <p>{{ modifier.name }}: {{ modifier.value }}</p>
+                            {% endfor %}
+                        </td>
+                        <td class="defender">{{ stat.defender.moral }}</td>
+                        <td class="defender">
+                            {% for regiment in stat.defender.regiments %}
+                                <p>{{ regiment.unit }}: {{ regiment.amount }}</p>
+                            {% endfor %}
+                        </td>
+                        <td class="defender">
+                            {% for modifier in stat.defender.modifiers %}
+                                <p>{{ modifier.name }}: {{ modifier.value }}</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+<style>
+    table, th, td {
+        border: 1px solid white;
+        border-collapse: collapse;
+    }
+    th, td {
+        text-align: center;
+    }
+    th {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .attacker {
+        background-color: #96D4D4;
+    }
+    .defender {
+        background-color: #ff9999;
+    }
+</style>
