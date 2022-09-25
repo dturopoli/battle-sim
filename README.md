@@ -37,9 +37,6 @@ battle_configuration:
 
 ### How it works
 
-Fixtures are used to populate database with Units, UnitTypes, Terrains and SpecialEvents. 
-User needs to send two positive integer values *army1* and *army2* that represent army sizes to route */battle-simulator*.
-
 #### Unit types
 * There are 3 currently supported unit types: *infantry*, *cavalry*, *artillery*
 
@@ -64,10 +61,10 @@ on mountains then it is to defend, so attacker will have a negative buff).
 ### Fight
 Battle will play out in phases. During each phase armies roll a dice, and then based on army moral modifier, 
 battle modifiers (e.g. terrain), special event modifier (e.g there is a small chance that special event will trigger and add buff to army),
-army stats (attack, defense), dice roll a phase winner is calculated and each army loses some troops and moral based
+army stats (attack, defense) and dice roll a phase winner is calculated and each army loses some troops and moral based
 on all those modifiers.
 
-Fight will continue until one army loses moral or all troops.
+Fight will continue until one army loses moral or all troops. (or if there is more than 50 phases, defender will be winner)
 
 
 
