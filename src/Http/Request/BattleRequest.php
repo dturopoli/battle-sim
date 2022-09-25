@@ -7,12 +7,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BattleRequest extends AbstractRequest
 {
     #[Assert\NotBlank]
+    #[Assert\Type('numeric')]
     #[Assert\Positive]
-    protected int $army1;
+    protected $army1;
 
     #[Assert\NotBlank]
+    #[Assert\Type('numeric')]
     #[Assert\Positive]
-    protected int $army2;
+    protected $army2;
 
     /**
      * @return int
@@ -35,7 +37,7 @@ class BattleRequest extends AbstractRequest
      */
     protected function setArmy1($value)
     {
-        $this->army1 = (int) $value;
+        $this->army1 = $value;
     }
 
     /**
@@ -43,6 +45,6 @@ class BattleRequest extends AbstractRequest
      */
     protected function setArmy2($value)
     {
-        $this->army2 = (int) $value;
+        $this->army2 = $value;
     }
 }
