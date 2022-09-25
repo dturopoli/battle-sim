@@ -33,30 +33,37 @@ class ArmyFactory implements ArmyFactoryInterface
             ->setName($name)
             ->setMoral(100);
 
-        // Determine unit types that will be used for each unit type
+        // Determine units that will be used for each unit type
         $units = [];
         foreach ($this->validUnitTypes as $validUnitType) {
-            $units[] = $this->unitRepository->randomUnitOfType($validUnitType);
+            $randomUnit = $this->unitRepository->randomUnitOfType($validUnitType);
+
+            if ($randomUnit) {
+                $units[] = $this->unitRepository->randomUnitOfType($validUnitType);
+            }
         }
 
-        $countOfUnits = count($units);
+        shuffle($units);
+        $lastUnit = array_pop($units);
 
-        foreach ($units as $key => $unit) {
-            // If no more available troops add empty regiments
+        foreach ($units as $unit) {
             if ($numberOfTroops == 0) {
-                $army->addRegiment($this->regimentFactory->create($unit, 0));
-                continue;
+                break;
             }
 
-            // If last unit add rest of troops to that regiment
-            if ($key == $countOfUnits - 1) {
-                $amount = $numberOfTroops;
-            } else {
-                $amount = rand(0, $numberOfTroops);
+            $amount = rand(0, $numberOfTroops);
+
+            if ($amount == 0) {
+                continue;
             }
 
             $army->addRegiment($this->regimentFactory->create($unit, $amount));
             $numberOfTroops -= $amount;
+        }
+
+        // If there are still some troops left use last unit form units array to create regiment
+        if ($numberOfTroops) {
+            $army->addRegiment($this->regimentFactory->create($lastUnit, $numberOfTroops));
         }
 
         return $army;

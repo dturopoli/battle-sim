@@ -32,7 +32,7 @@ class BattleController extends BaseController
         // Handle invalid arguments
         if ($violations->count()) {
             return $this->render('battle/battle.html.twig', [
-                'errors' => $this->formatViolations($violations),
+                'errors' => $this->formatConstraintViolations($violations),
             ]);
         }
 

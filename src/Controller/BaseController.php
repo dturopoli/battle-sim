@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 abstract class BaseController extends AbstractController
 {
     /**
-     * @param ConstraintViolation[] $violations
+     * @param ConstraintViolationListInterface $violations
      * @return array
      */
-    public function formatViolations(array $violations): array
+    public function formatConstraintViolations(ConstraintViolationListInterface $violations): array
     {
         $errors = [];
 

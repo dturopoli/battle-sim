@@ -3,12 +3,12 @@
 namespace App\Service;
 
 use App\Contract\Model\BattleInterface;
+use App\Contract\Service\ArmyServiceInterface;
 use App\Contract\Service\ArmyStatsCalculatorInterface;
 use App\Contract\Service\BattleLoggerInterface;
 use App\Contract\Service\BattleSimulatorInterface;
 use App\Contract\Model\ArmyInterface;
 use App\Contract\Service\DiceRollerInterface;
-use App\Contract\Service\ModifierFactoryInterface;
 use App\Exception\BattleTooLongException;
 use App\Repository\SpecialEventRepository;
 
@@ -17,9 +17,9 @@ class BattleSimulator implements BattleSimulatorInterface
     public function __construct(
         private DiceRollerInterface $diceRoller,
         private ArmyStatsCalculatorInterface $armyStatsCalculator,
-        private ModifierFactoryInterface $modifierFactory,
         private BattleLoggerInterface $battleLogger,
         private SpecialEventRepository $specialEventRepository,
+        private ArmyServiceInterface $armyService,
         private bool $enableSpecialEvents = false
     ) {
     }
@@ -143,30 +143,30 @@ class BattleSimulator implements BattleSimulatorInterface
         $winnerArmyLossModifier = $loserStats / $combinedStats;
         $loserArmyLossModifier = $winnerStats / $combinedStats;
 
-        $this->updateNumberOfRegimentTroops($winner, $winnerArmyLossModifier);
-        $this->updateNumberOfRegimentTroops($loser, $loserArmyLossModifier);
+        $this->armyService->updateNumberOfRegimentTroops($winner, $winnerArmyLossModifier);
+        $this->armyService->updateNumberOfRegimentTroops($loser, $loserArmyLossModifier);
 
-        $this->adjustMoral($loser, $loserArmyLossModifier * 0.5);
-        $this->adjustMoral($winner, $winnerArmyLossModifier * 0.5);
+        $this->armyService->adjustMoral($loser, $loserArmyLossModifier * 0.5);
+        $this->armyService->adjustMoral($winner, $winnerArmyLossModifier * 0.5);
     }
 
     /**
-     * Apply battle specific modifiers
+     * Apply battle specific modifiers (at the moment only terrain modifier is applied)
      * @param BattleInterface $battle
      */
     private function applyBattleModifiers(BattleInterface $battle)
     {
-        $attacker = $battle->getAttacker();
-        $defender = $battle->getDefender();
-
         $terrain = $battle->getTerrain();
 
         if (!$terrain) {
             return;
         }
 
-        $attacker->addModifier($this->modifierFactory->create('terrain', $terrain->getAttackerModifier()));
-        $defender->addModifier($this->modifierFactory->create('terrain', $terrain->getDefenderModifier()));
+        $attacker = $battle->getAttacker();
+        $defender = $battle->getDefender();
+
+        $this->armyService->applyModifier($attacker, 'terrain', $terrain->getAttackerModifier());
+        $this->armyService->applyModifier($defender, 'terrain', $terrain->getDefenderModifier());
     }
 
     /**
@@ -177,11 +177,12 @@ class BattleSimulator implements BattleSimulatorInterface
     {
         $diceRoll = $this->diceRoller->roll();
 
-        $army->addModifier($this->modifierFactory->create('moral', $army->getMoral() * 0.01));
-        $army->addModifier($this->modifierFactory->create('dice_roll', $diceRoll));
+        $this->armyService->applyModifier($army, 'moral', $army->getMoral() * 0.01);
+        $this->armyService->applyModifier($army, 'dice_roll', $diceRoll);
     }
 
     /**
+     * If two dice rolls match apply random special event modifier
      * @param BattleInterface $battle
      */
     private function applySpecialEventModifier(BattleInterface $battle)
@@ -205,39 +206,6 @@ class BattleSimulator implements BattleSimulatorInterface
         /** @var ArmyInterface $army */
         $army = array_pop($armies);
 
-        $army->addModifier($this->modifierFactory->create($specialEvent->getName(), $specialEvent->getModifier()));
-    }
-
-    /**
-     * Adjust moral of armies based on modifier
-     * @param ArmyInterface $army
-     * @param float $modifier
-     */
-    private function adjustMoral(ArmyInterface $army, float $modifier)
-    {
-        $currentMoral = $army->getMoral();
-
-        $army->setMoral($currentMoral - $currentMoral * $modifier);
-    }
-
-    /**
-     * Adjust number of troops based on modifier
-     * @param ArmyInterface $army
-     * @param float $modifier
-     */
-    private function updateNumberOfRegimentTroops(ArmyInterface $army, float $modifier)
-    {
-        $modifier = round($modifier, 4);
-
-        foreach ($army->getRegiments() as $regiment) {
-            if ($regiment->getAmount() == 0) {
-                continue;
-            }
-
-            $amount = $regiment->getAmount();
-            $newAmount = $amount - round($amount * $modifier);
-
-            $regiment->setAmount($newAmount);
-        }
+        $this->armyService->applyModifier($army, $specialEvent->getName(), $specialEvent->getModifier());
     }
 }

@@ -39,6 +39,9 @@ services:
     App\Contract\Service\BattleLoggerInterface:
         class: App\Service\BattleLogger
 
+    App\Contract\Service\ArmyServiceInterface:
+        class: App\Service\ArmyService
+
     #
     # FACTORIES
     #

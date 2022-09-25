@@ -9,11 +9,12 @@ class BattleRequest extends AbstractRequest
     #[Assert\NotBlank]
     #[Assert\Type('numeric')]
     #[Assert\Positive]
+    #[Assert\Range(min: 1, max: 1000000000)]
     protected $army1;
 
     #[Assert\NotBlank]
     #[Assert\Type('numeric')]
-    #[Assert\Positive]
+    #[Assert\Range(min: 1, max: 1000000000)]
     protected $army2;
 
     /**
