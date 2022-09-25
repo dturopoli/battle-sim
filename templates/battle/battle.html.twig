@@ -1,7 +1,7 @@
 {% if errors is defined %}
     <div class="error-messages">
         {% for error in errors %}
-            <p>{{ error.propertyPath }} : {{ error.getMessage }}</p>
+            <p>{{ error }}</p>
         {% endfor %}
     </div>
 {% endif %}

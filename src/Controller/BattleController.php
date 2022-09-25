@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
+use App\Contract\Exception\BattleExceptionInterface;
 use App\Contract\Service\ArmyFactoryInterface;
 use App\Contract\Service\BattleFactoryInterface;
 use App\Contract\Service\BattleSimulatorInterface;
 use App\Http\Request\BattleRequest;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BattleController extends AbstractController
+class BattleController extends BaseController
 {
     /**
      * @param ArmyFactoryInterface $armyBuilder
@@ -29,9 +29,10 @@ class BattleController extends AbstractController
     {
         $violations = $request->validate();
 
+        // Handle invalid arguments
         if ($violations->count()) {
             return $this->render('battle/battle.html.twig', [
-                'errors' => $violations
+                'errors' => $this->formatViolations($violations),
             ]);
         }
 
@@ -40,7 +41,13 @@ class BattleController extends AbstractController
 
         $battle = $this->battleFactory->create($army1, $army2);
 
-        $this->battleSimulator->simulate($battle);
+        try {
+            $this->battleSimulator->simulate($battle);
+        } catch (BattleExceptionInterface $e) {
+            return $this->render('battle/battle.html.twig', [
+                'errors' => [$e->getMessage()],
+            ]);
+        }
 
         return $this->render('battle/battle.html.twig', [
             'battle_results' => $battle->getBattleResults(),

@@ -9,6 +9,7 @@ use App\Contract\Service\BattleSimulatorInterface;
 use App\Contract\Model\ArmyInterface;
 use App\Contract\Service\DiceRollerInterface;
 use App\Contract\Service\ModifierFactoryInterface;
+use App\Exception\BattleTooLongException;
 use App\Repository\SpecialEventRepository;
 
 class BattleSimulator implements BattleSimulatorInterface
@@ -26,6 +27,7 @@ class BattleSimulator implements BattleSimulatorInterface
     /**
      * Simulate battle and return results
      * @param BattleInterface $battle
+     * @throws BattleTooLongException
      */
     public function simulate(BattleInterface $battle)
     {
@@ -68,6 +70,7 @@ class BattleSimulator implements BattleSimulatorInterface
     /**
      * Start the battle :)
      * @param BattleInterface $battle
+     * @throws BattleTooLongException
      */
     private function startBattle(BattleInterface $battle)
     {
@@ -86,6 +89,11 @@ class BattleSimulator implements BattleSimulatorInterface
 
             $this->battleLogger->logPhase("Phase $phase", $battle);
             $phase++;
+
+            // Make sure to exit while
+            if ($phase > 50) {
+                throw new BattleTooLongException('Battle took over 50 phases.');
+            }
         }
     }
 
