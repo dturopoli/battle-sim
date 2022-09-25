@@ -39,6 +39,6 @@ class TerrainRepository extends ServiceEntityRepository
             return null;
         }
 
-        return $this->find(array_rand($ids));
+        return $this->find($ids[array_rand($ids)]);
     }
 }
